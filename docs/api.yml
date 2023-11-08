@@ -274,6 +274,23 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AuthorTopics"
+  /books/{bookId}/topics/{topicId}:
+    put:
+      tags:
+        - Books
+      summary: Modify topic for a book by Id
+      operationId: updateBookAssociateTopic
+      parameters:
+        - $ref: "#/components/parameters/BookId"
+        - $ref: "#/components/parameters/TopicId"
+      responses:
+        200:
+          description: Book updated topic
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Book"
 
 components:
   schemas:
@@ -370,3 +387,17 @@ components:
         type: integer
         default: 20
       required: false
+    TopicId:
+      in: path
+      name: topicId
+      description: Id of topic
+      schema:
+        type: string
+      required: true
+    BookId:
+      in: path
+      name: bookId
+      description: Id of book
+      schema:
+        type: string
+      required: true
