@@ -205,20 +205,82 @@ paths:
       responses:
         200:
           description: Updated books with authors
-# b_1 UpdateBookAuthor possède uniquement les identifiants de CrupdateBook (bookId) et
-#Author (authorId) parce qu'il s'agit d'une opération de mise à jour des
-#associations entre les livres (CrupdateBook) et les auteurs (Author)
+  # b_1 UpdateBookAuthor possède uniquement les identifiants de CrupdateBook (bookId) et
+  #Author (authorId) parce qu'il s'agit d'une opération de mise à jour des
+  #associations entre les livres (CrupdateBook) et les auteurs (Author)
 
-# b_2 UpdateBookAuthor devrait avoir les propriétés de CrupdateBook et de Author dans les cas où l'opération
-# PUT /books/authors est conçue pour mettre à jour directement les propriétés des livres et des auteurs associés.
+  # b_2 UpdateBookAuthor devrait avoir les propriétés de CrupdateBook et de Author dans les cas où l'opération
+  # PUT /books/authors est conçue pour mettre à jour directement les propriétés des livres et des auteurs associés.
+  /topics:
+    get:
+      tags:
+        - "Topic"
+      summary: Get all topics
+      description: The returned topics are ordered by name.
+      operationId: getTopics
+      parameters:
+        - in: query
+          name: name
+          description: Filter return topic by given name
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        200:
+          description: The list of filtered topics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Topic"
+    put:
+      tags:
+        - "Topic"
+      summary: Create or update a list of topic
+      operationId: crupdateTopic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CrupdateTopic"
+      responses:
+        200:
+          description: The list of created or updated topic
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Topic"
 
 components:
   schemas:
+    CrupdateTopic:
+      type: object
+      properties:
+        topicName:
+          type: string
+          example: "Romance"
+
+    Topic:
+      type: object
+      allOf:
+        - properties:
+            id:
+              type: string
+        - $ref: "#/components/schemas/CrupdateTopic"
+
     Book:
       type: object
 
       allOf:
         - $ref: "#/components/schemas/CrupdateBook"
+
     Author:
       type: object
       properties:
@@ -230,6 +292,7 @@ components:
           enum:
             - M
             - F
+
     CrupdateBook:
       type: object
       properties:
@@ -250,3 +313,21 @@ components:
         releaseDate:
           type: string
           format: date
+
+  parameters:
+    Page:
+      name: page
+      description: Page Number for pagination
+      in: query
+      schema:
+        type: integer
+        default: 1
+      required: false
+    PageSize:
+      name: pageSize
+      description: Page size for pagination
+      in: query
+      schema:
+        type: integer
+        default: 20
+      required: false
