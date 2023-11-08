@@ -309,6 +309,18 @@ paths:
                 type: object
                 $ref: "#/components/schemas/Book"
 
+  /topics/{topicId}:
+    delete:
+      tags:
+        - "Topic"
+      summary: Remove a topic by id
+      operationId: deleteTopicById
+      parameters:
+        - $ref: "#/components/parameters/TopicId"
+      responses:
+        200:
+          description: Topic deleted successfully
+
 components:
   schemas:
     AuthorTopics:
