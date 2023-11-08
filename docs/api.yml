@@ -211,6 +211,23 @@ paths:
 
   # b_2 UpdateBookAuthor devrait avoir les propriétés de CrupdateBook et de Author dans les cas où l'opération
   # PUT /books/authors est conçue pour mettre à jour directement les propriétés des livres et des auteurs associés.
+  /books/topics:
+    put:
+      tags:
+        - Books
+      summary: Modify topics for books by Id
+      operationId: updateBooksWithTopics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                $ref: "#/components/schemas/UpdateBookTopic"
+      responses:
+        200:
+          description: The updated book with author
   /topics:
     get:
       tags:
@@ -369,6 +386,16 @@ components:
         releaseDate:
           type: string
           format: date
+    UpdateBookTopic:
+      type: object
+      properties:
+        bookId:
+          type: string
+        topicId:
+          type: string
+      required:
+        - "bookId"
+        - "authorId"
 
   parameters:
     Page:
