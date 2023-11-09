@@ -50,9 +50,7 @@ paths:
           $ref: "#/components/responses/SpecificResponse403"
         500:
           $ref: "#/components/responses/SpecificResponse500"
-    # La pagination permet de réduire la charge sur le serveur en limitant la quantité de données renvoyée à la fois,
-    # De plus, elle facilite la navigation pour les clients en leur permettant de parcourir les résultats de manière plus gérable,
-    # en demandant des pages spécifiques de données.
+  
   /books/{bookId}:
     delete:
       tags:
@@ -108,12 +106,7 @@ paths:
           $ref: "#/components/responses/SpecificResponse403"
         500:
           $ref: "#/components/responses/SpecificResponse500"
-    # a- Oui, la gestion de la pagination à travers les entêtes de la requête est techniquement possible.
-    # Cependant, il est généralement préférable d'utiliser des paramètres de requête pour plusieurs raisons.
-    # Les paramètres de requête sont plus visibles pour les utilisateurs de l'API, ce qui les rend plus explicites et faciles à comprendre.
-
-    # b- La décision de gérer la pagination à travers les entêtes de la requête ou les paramètres de requête dépend de la conception de l'API et des besoins spécifiques.
-    # Cependant, il est généralement recommandé d'utiliser des paramètres de requête pour la pagination.
+ 
   /authors/import:
     post:
       tags:
@@ -231,12 +224,7 @@ paths:
       responses:
         200:
           description: Updated books with authors
-  # b_1 UpdateBookAuthor possède uniquement les identifiants de CrupdateBook (bookId) et
-  #Author (authorId) parce qu'il s'agit d'une opération de mise à jour des
-  #associations entre les livres (CrupdateBook) et les auteurs (Author)
 
-  # b_2 UpdateBookAuthor devrait avoir les propriétés de CrupdateBook et de Author dans les cas où l'opération
-  # PUT /books/authors est conçue pour mettre à jour directement les propriétés des livres et des auteurs associés.
   /books/topics:
     put:
       tags:
