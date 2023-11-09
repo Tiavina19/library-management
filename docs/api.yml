@@ -114,7 +114,33 @@ paths:
 
     # b- La décision de gérer la pagination à travers les entêtes de la requête ou les paramètres de requête dépend de la conception de l'API et des besoins spécifiques.
     # Cependant, il est généralement recommandé d'utiliser des paramètres de requête pour la pagination.
-
+  /authors/import:
+    post:
+      tags:
+        - "Authors"
+      summary: Import authors from Excel or JSON
+      operationId: importAuthors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/ImportAuthor"
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                excelFile:
+                  type: string
+                  format: binary
+                  description: Excel file containing author data
+                jsonFile:
+                  type: string
+                  format: binary
+                  description: JSON file containing author data
+      responses:
+        200:
+          $ref: "#/components/responses/SpecificResponse200ForAuthors"
     put:
       tags:
         - "Authors"
@@ -253,6 +279,33 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Topic"
+  /books/import:
+    post:
+      tags:
+        - "Books"
+      summary: Import books from Excel or JSON
+      operationId: importBooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/ImportBook"
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                excelFile:
+                  type: string
+                  format: binary
+                  description: Excel file containing book data
+                jsonFile:
+                  type: string
+                  format: binary
+                  description: JSON file containing book data
+      responses:
+        200:
+          $ref: "#/components/responses/SpecificResponse200"
     put:
       tags:
         - "Topic"
@@ -323,6 +376,32 @@ paths:
 
 components:
   schemas:
+    ImportAuthor:
+      type: object
+      properties:
+        authorName:
+          type: string
+        sex:
+          type: string
+          enum:
+            - Male
+            - Female
+            - Other
+    ImportBook:
+      type: object
+      properties:
+        bookName:
+          type: string
+        author:
+          $ref: "#/components/schemas/Author"
+        pageNumbers:
+          type: integer
+        topic:
+          type: string
+          enum:
+            - ROMANCE
+            - COMEDY
+            - OTHER
     AuthorTopics:
       type: object
       allOf:
